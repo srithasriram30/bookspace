@@ -16,8 +16,14 @@ const userSchema = new mongoose.Schema({
     },
 
     profilePic: String,
-    followers: [ObjectId],
-    following: [ObjectId],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     role: {
         type: String,
         enum: ['user', 'admin'],
@@ -36,4 +42,4 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('User', userSchema)
+export const User = mongoose.model('User', userSchema)

@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 const shelfSchema = mongoose.Schema({
     userId: isObjectIdOrHexString,
     books: [{
-        bookId: isObjectIdOrHexString,
+        bookId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Book'
+        },
         shelfType: {
             type: String,
             enum: ['read', 'currentlyReading', 'wantToRead']
@@ -14,4 +17,4 @@ const shelfSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.Schema("Shelf", shelfSchema);
+export const Shelf = mongoose.Schema("Shelf", shelfSchema);

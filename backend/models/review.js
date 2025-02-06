@@ -1,17 +1,29 @@
 import mongoose from "mongoose"
 
 const reviewSchema = mongoose.Schema({
-    userId: ObjectId,
-    bookId: ObjectId,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+       ref: 'User'
+   },
+    bookId: {
+        type: mongoose.Schema.Types.ObjectId,
+       ref: 'Book'
+    },
     rating: {
         type: Number,
         min: 1,
         max: 5
     },
     reviewText: String,
-    likes: [ObjectId], //users who liked the review
+    likes: [{
+         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }], //users who liked the review
     comments: [{
-        userId: ObjectId,
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+           ref: 'User'
+       },
         text: String,
         date: Date
 }]
@@ -21,4 +33,4 @@ const reviewSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('Review', reviewSchema)
+export const Review = mongoose.model('Review', reviewSchema)

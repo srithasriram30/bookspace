@@ -14,10 +14,13 @@ const bookSchema = new mongoose.Schema({
     description: String,
     coverImage: String,
     averageRating: Number,
-    reviews: [ObjectId]
+    reviews: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Review'
+    }]
 },
 {
     timestamps: true
 })
 
-module.exports = mongoose.model("Book", bookSchema)
+export const Book = mongoose.model("Book", bookSchema);
