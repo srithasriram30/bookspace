@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import booksRoutes from './routes/bookRoutes.js'
 import connectDB from './config/dbConn.js'
-
+import cors from 'cors'
 dotenv.config({
     path:'.env' 
 });
@@ -22,8 +22,8 @@ mongoose.connect(mongodbUrl)
 .then(() => {
     console.log('App connected to MongoDB')
 })
+app.use(cors());
 
-// connectDB();
 
 app.get('/', (req,res)=> {
     res.send('Hello world!')

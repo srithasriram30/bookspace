@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const shelfSchema = mongoose.Schema({
-    userId: isObjectIdOrHexString,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     books: [{
         bookId: {
             type: mongoose.Schema.Types.ObjectId,
