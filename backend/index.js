@@ -2,7 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import booksRoutes from './routes/bookRoutes.js'
-import connectDB from './config/dbConn.js'
+import authRoutes from './routes/authRoutes.js'
 import cors from 'cors'
 dotenv.config({
     path:'.env' 
@@ -31,3 +31,5 @@ app.get('/', (req,res)=> {
 
 
 app.use('/books', booksRoutes)
+
+app.use('/auth', authRoutes)

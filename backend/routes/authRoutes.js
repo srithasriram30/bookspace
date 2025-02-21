@@ -1,5 +1,5 @@
 import express from 'express';
-import { User } from "../models/user";
+import { User } from "../models/user.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
@@ -12,23 +12,23 @@ dotenv.config({
 
 const router = express.Router();
 
-// router.use(cors({
-//     origin: 'http://localhost:5173',
-//     credentials: true
-// }));
-
 //register user
 router.post('/register', async (req, res) => {
     try {
         const { username, email, password, role } = req.body;
 
-
         const newUser = {
             username,
             email,
             password: await bcrypt.hash(password, 10),
-            role
+            role: 'user',
+            isAdmin: false
+
         }
+
+        const user = await User.create(newUser);
+
+        res.status(201).json({ user, message: "User registered successfully" });
 
     } catch (error) {
         console.log(error);
@@ -43,16 +43,18 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email }); 
 
-        const passwordCompare = await bcrypt.compare(password, user.password);
-
-        if(!user || !passwordCompare){
+        if(!user){
             return res.status(400).json({ message: "Username or password is incorrect" });
         }
 
-        const accessToken = jwt.sign({
-            id: user._id,
-            role: user.role
-        }, process.env.ACCESS_TOKEN_SECRET);
+        const passwordCompare = await bcrypt.compare(password, user.password);
+
+        if(!passwordCompare){
+            return res.status(400).json({ message: "Username or password is incorrect" });
+        }
+
+
+        const accessToken = generateToken(user);
 
         res.status(200).json({ user, accessToken, message: "User logged in successfully"});
 
@@ -61,3 +63,14 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ message: error.message });
     }   
 });
+
+
+const generateToken = (user) => {
+    return jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '7d',
+      });
+}
+
+
+
+export default router;
