@@ -51,4 +51,14 @@ router.post('/:id/addReview', async (req, res) => {
     }
 });
 
+/*
+TODO:
+1) Edit and delete review => only users who wrote the review 
+or admin can edit or delete
+2) Get all reviews of a book
+3) Get all reviews of a user (user's profile)
+
+*/
+
+
 export default router;

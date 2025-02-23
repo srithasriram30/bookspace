@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import booksRoutes from './routes/bookRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 import cors from 'cors'
 dotenv.config({
     path:'.env' 
@@ -33,3 +34,5 @@ app.get('/', (req,res)=> {
 app.use('/books', booksRoutes)
 
 app.use('/auth', authRoutes)
+
+app.use('/users', userRoutes)

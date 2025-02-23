@@ -8,7 +8,6 @@ const Register = () => {
             email: formData.get('email'),
             password: formData.get('password'),
         }).then(res => {
-            console.log(res)
             if(res.status === 201)
             {
                 alert('User registered successfully')

@@ -7,6 +7,10 @@ import { Button } from 'antd';
 const { Meta } = Card;
 
 const BookList = () => {
+  const tokenArray = window.localStorage.getItem('token').split('.');
+  const payload = JSON.parse(atob(tokenArray[1]));
+  const isAdmin = payload.user.role === 'admin' ? true : false;
+  
   const [bookList, setBookList] = useState([]);
   useEffect(() => {
     axios('http://localhost:3500/books/')
@@ -20,11 +24,11 @@ const BookList = () => {
     <div>
         <h1 className="text-2xl py-3 textPrimary">List of Books</h1>
         <div className="flex  justify-end">
-          <Button>
+         { isAdmin && <Button>
             <Link to="/books/add">
               Add Book
             </Link>
-            </Button>
+            </Button>}
           </div>
          <div className='flex flex-wrap justify-center'>
           {bookList.map((book) => (

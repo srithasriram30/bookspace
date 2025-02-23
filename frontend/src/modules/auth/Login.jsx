@@ -7,11 +7,16 @@ const Login = () => {
       email: formData.get('email'),
       password: formData.get('password'),
     }).then(res => {
-      console.log(res)
       if(res.status === 200)
       {
         alert('User logged in successfully')
-        window.location.replace('/dashboard')
+        window.localStorage.setItem('token', res.data.accessToken)
+        if(res.data.user.isAdmin){
+          window.location.replace('/adminDashboard')
+        } else {
+          window.location.replace('/dashboard')
+        }
+        
       }
       else
       {

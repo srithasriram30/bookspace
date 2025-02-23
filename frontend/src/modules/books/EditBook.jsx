@@ -5,7 +5,12 @@ import { useParams } from 'react-router-dom';
 
 
 const EditBook = () => {
-  
+  /*
+  TODO: 
+  1. Check form - make it editable
+  2. Use multi select from Ant Design for genre
+
+  */
   const {id} = useParams();
 
   const [book, setBook] = useState([]);
@@ -64,6 +69,7 @@ const EditBook = () => {
           <input className='border border-gray-300 rounded px-3 py-2 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary bg-[#F3F4F6]' type="date" id="published_date" name="published_date" value={book.publishDate} />
         </div>
         <div>
+          
           <label className='text-sm font-semibold text-gray-700' htmlFor="genre">Genre</label>
           <input className='border border-gray-300 rounded px-3 py-2 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-primary bg-[#F3F4F6]' type="text" id="genre" name="genre" value={book.genre} />
         </div>

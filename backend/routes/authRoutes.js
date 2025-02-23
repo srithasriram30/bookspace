@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import dotenv from 'dotenv'
+import { createCookie } from '../middleware/middleware.js';
 
 dotenv.config({
     path:'.env' 
@@ -15,14 +16,18 @@ const router = express.Router();
 //register user
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, password, role } = req.body;
+        let { username, email, password, role } = req.body;
+
+        if(!role) {
+            role = 'user';
+        }
 
         const newUser = {
             username,
             email,
             password: await bcrypt.hash(password, 10),
-            role: 'user',
-            isAdmin: false
+            role,
+            isAdmin: role === 'admin' ? true : false
 
         }
 
@@ -55,6 +60,8 @@ router.post('/login', async (req, res) => {
 
 
         const accessToken = generateToken(user);
+        
+        createCookie(res, accessToken);
 
         res.status(200).json({ user, accessToken, message: "User logged in successfully"});
 
@@ -71,6 +78,18 @@ const generateToken = (user) => {
       });
 }
 
+
+
+router.post('/logout', async (req, res) => {
+    try {
+        res.clearCookie('token');
+        res.status(200).json({ message: "User logged out successfully" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }   
+});
 
 
 export default router;

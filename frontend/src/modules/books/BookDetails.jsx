@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
 const BookDetails = () => {
+ const tokenArray = window.localStorage.getItem('token').split('.');
+ const payload = JSON.parse(atob(tokenArray[1]));
+ const isAdmin = payload.user.role === 'admin' ? true : false;
 
   const {id} = useParams();
   const [book, setBook] = useState([]);
@@ -33,12 +36,13 @@ const BookDetails = () => {
   return (
     <>
     <div className='flex flex-col'>
-      <button>
+ {  isAdmin && <div> <button>
         <Link to={`/books/${id}/edit`}>Edit book</Link>
         </button>
       <button onClick={deleteBook}>
        Delete book
-      </button>
+      </button> </div>  
+      }
       <h1>{book.title}</h1>
       <h2>{book.author}</h2>
       <p>{book.description}</p>
